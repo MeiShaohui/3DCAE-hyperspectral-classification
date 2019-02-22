@@ -106,11 +106,6 @@ def train_v3(model_name):
     train_3DCAE_v3(X_train, X_test, model_name=model_name)
 
 
-def finetune_v3(model_name):
-    X_train, y_train, train_index, X_test, y_test, test_index = pre_process_indian_for_cls()
-    finetune_3DCAE_v3(X_train, X_test, y_train, y_test, model_name=model_name)
-
-
 class ModeTest:
     def __init__(self, model_name, save_file_name, epoch=40):
         self.data, self.label = self.pre_process_data()
@@ -154,7 +149,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="train 3DCAE net",
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--mode', type=str, default='train',
-                        help='train, test, finetune, test_finetune ')
+                        help='train, test.')
     parser.add_argument('--epoch', type=int, default=400,
                         help='1000 is ok')
     args = parser.parse_args()
@@ -166,21 +161,5 @@ if __name__ == '__main__':
         test_mode = ModeTest(model_name=model_name,
                              save_file_name='./data/indian_CAE_feature.h5',
                              epoch=args.epoch)
-        # test_mode.get_feature()
-        data_3d = sio.loadmat(
-            "/Users/jingyu.ji/3DCAE_code/hyperspectral_datas/indian_pines/data/Indian_pines_corrected.mat")["indian_pines_corrected"]
-        data_3d = data_3d / data_3d.max()
-        data_3d = data_3d.transpose((2, 0, 1))[None, ..., None]
-        test_mode.get_global_feature(data_3d)
-        test_mode.save_feature_label()
-    elif args.mode == 'finetune':
-        model_name = './model/trained_by_indian/CAE_tune/DCAE_v3_epoch_'
-        finetune_v3(model_name=model_name)
-    elif args.mode == 'test_finetune':
-        model_name = './model/trained_by_indian/CAE_tune/DCAE_v3_epoch__finetune'
-        test_mode = ModeTest(model_name=model_name,
-                             save_file_name='./data/indian_feature_finetune_with_CAE.h5',
-                             epoch=args.epoch)
         test_mode.get_feature()
-
         test_mode.save_feature_label()

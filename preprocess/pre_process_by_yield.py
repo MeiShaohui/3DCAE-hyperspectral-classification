@@ -138,6 +138,7 @@ def set_and_save_indian_pines_5d_data(patch_size=5, is_rotate=True):
     dataset_process = HSI_preprocess(
         name='indian_pines', dst_shape=(145, 145, 224))
     data = dataset_process.add_channel(data)
+    data = dataset_process.data_add_zero(data)
     data_scale_to1 = data / np.max(data)
     data_5d = dataset_process.get_patch_data(
         data_scale_to1, patch_size=patch_size, is_rotate=is_rotate)

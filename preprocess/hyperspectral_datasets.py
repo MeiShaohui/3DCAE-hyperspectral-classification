@@ -36,6 +36,7 @@ class DataSet:
     def get_data(self):
         data_file = os.path.expanduser(
             "{}/{}".format(self.dir, self.data_file))
+        print(data_file)
         assert os.path.exists(data_file)
         self.data = sio.loadmat(data_file)[self.data_key]
 

@@ -9,7 +9,6 @@ import scipy.io as sio
 import tensorflow as tf
 from net.DCAE_v2 import DCAE_v2_feature as DCAE_fea
 from net.DCAE_v2 import DCAE_v2 as DCAE
-from net.DCAE_v2 import DCAE_LR
 from evaluate.PSNR import psnr
 from sklearn.model_selection import StratifiedKFold
 # import preprocess.preprocess as pre
@@ -101,25 +100,6 @@ def train_3DCAE_v3(x_train, x_test, model_name):
             model_name, save_model_per_epoch*(i+1)))
 
 
-def finetune_3DCAE_v3(x_train, x_test, y_train, y_test, model_name):
-    model = DCAE_LR()
-    model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(lr=0.01),
-                  metrics=['accuracy'])
-    n_epoch = args.epoch
-    save_model_per_epoch = 50
-    save_times = n_epoch // save_model_per_epoch
-    print("finetune the model !!!!!")
-    model.load_weights('./model/trained_by_indian/CAE/DCAE_v3_epoch_' +
-                       '_{}.model'.format(900), by_name=True)
-    for i in range(save_times):
-        model.fit(x_train, y_train, epochs=save_model_per_epoch, shuffle=True,
-                  validation_data=(x_test, y_test), verbose=1,
-                  batch_size=32)
-        mkdir_if_not_exist(os.path.split(model_name)[0])
-        model.save('{}_finetune_{}.model'.format(
-            model_name, save_model_per_epoch*(i+1)))
-
-
 def train_v3(model_name):
     x_train, _ = pre_process_indian()
     X_train, X_test = train_test_split(x_train, train_size=0.9)
@@ -173,9 +153,9 @@ class ModeTest:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="train 3DCAE net",
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--mode', type=str, default='test',
+    parser.add_argument('--mode', type=str, default='train',
                         help='train, test, finetune, test_finetune ')
-    parser.add_argument('--epoch', type=int, default=550,
+    parser.add_argument('--epoch', type=int, default=400,
                         help='1000 is ok')
     args = parser.parse_args()
     if args.mode == 'train':

@@ -34,10 +34,10 @@ pip install keras
 
      - Note: We currently only support Python 3.
 
-2. train in indian pines dataset.
+2. install other python packages.
 
 ```python
-python3 train_indian_pines.py
+pip install h5py sklearn
 ```
 
 ---
@@ -49,6 +49,7 @@ In our paper, amount of spatial information about hyperspectral image was explor
 run script as follow :
 
 ```python
+cd preprocess
 python3 ./preprocess/pre_process_by_yield.py
 ```
 

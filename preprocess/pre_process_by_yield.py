@@ -8,7 +8,6 @@ from scipy.ndimage.interpolation import rotate
 
 
 class HSI_preprocess:
-    # add zeros to make data to 220
     def __init__(self, name, dst_shape):
         self.name = name
         self.dst_shape = dst_shape
@@ -150,117 +149,6 @@ def set_and_save_indian_pines_5d_data(patch_size=5, is_rotate=True):
             '/indian_5d_patch_{}_with_rotate.h5'.format(patch_size)
     else:
         h5file_name = dataset.dir + '/indian_5d_patch_{}.h5'.format(patch_size)
-
-    file = h5py.File(h5file_name, 'w')
-    file.create_dataset('data', shape=(n_samples, n_channels, patch_size, patch_size, 1),
-                        chunks=(1024, n_channels, patch_size, patch_size, 1), dtype=np.float32,
-                        maxshape=(None, n_channels, patch_size, patch_size, 1))
-    file.create_dataset('labels', data=labels)
-    file.close()
-
-    with h5py.File(h5file_name, 'a') as h5f:
-        for i, (x, y, patch) in enumerate(data_5d):
-            if is_rotate:
-                h5f['data'][4*i:4*(i+1)] = patch[:, :, :, :, None]
-            else:
-                h5f['data'][i] = patch[None, :, :, :, None]
-
-
-def set_and_save_salina_5d_data(patch_size=5, is_rotate=True):
-    dataset = HSI.HSIDataSet('salina')
-    dataset.get_data()
-    dataset.get_labels()
-    print('data shape is: ', dataset.data.shape)  # 145,145,200
-    print('label shape is: ', dataset.labels.shape)  # 145, 145
-
-    data, labels = np.array(dataset.data), np.array(dataset.labels)
-    dataset_process = HSI_preprocess(name='salina', dst_shape=(512, 217, 224))
-    data = dataset_process.add_channel(data)
-    data_scale_to1 = data / np.max(data)
-    data_5d = dataset_process.get_patch_data(
-        data_scale_to1, patch_size=patch_size, is_rotate=is_rotate)
-
-    [h, w, n_channels] = data_scale_to1.shape
-    n_samples = h*w*4 if is_rotate else h*w
-    if is_rotate:
-        h5file_name = dataset.dir + \
-            '/salina_5d_patch_{}_with_rotate.h5'.format(patch_size)
-    else:
-        h5file_name = dataset.dir + '/salina_5d_patch_{}.h5'.format(patch_size)
-
-    file = h5py.File(h5file_name, 'w')
-    file.create_dataset('data', shape=(n_samples, n_channels, patch_size, patch_size, 1),
-                        chunks=(1024, n_channels, patch_size, patch_size, 1), dtype=np.float32,
-                        maxshape=(None, n_channels, patch_size, patch_size, 1))
-    file.create_dataset('labels', data=labels)
-    file.close()
-
-    with h5py.File(h5file_name, 'a') as h5f:
-        for i, (x, y, patch) in enumerate(data_5d):
-            if is_rotate:
-                h5f['data'][4*i:4*(i+1)] = patch[:, :, :, :, None]
-            else:
-                h5f['data'][i] = patch[None, :, :, :, None]
-
-
-def set_and_save_pavia_5d_data(patch_size=5, is_rotate=True):
-    dataset = HSI.HSIDataSet('pavia')
-    dataset.get_data()
-    dataset.get_labels()
-    print('data shape is: ', dataset.data.shape)  # 145,145,200
-    print('label shape is: ', dataset.labels.shape)  # 145, 145
-
-    data, labels = np.array(dataset.data), np.array(dataset.labels)
-    dataset_process = HSI_preprocess(name='pavia', dst_shape=(1096, 715, 103))
-    data = dataset_process.add_channel(data)
-    data_scale_to1 = data / np.max(data)
-    data_5d = dataset_process.get_patch_data(
-        data_scale_to1, patch_size=patch_size, is_rotate=is_rotate)
-
-    [h, w, n_channels] = data_scale_to1.shape
-    n_samples = h*w*4 if is_rotate else h*w
-    if is_rotate:
-        h5file_name = dataset.dir + \
-            '/pavia_5d_patch_{}_with_rotate.h5'.format(patch_size)
-    else:
-        h5file_name = dataset.dir + '/pavia_5d_patch_{}.h5'.format(patch_size)
-
-    file = h5py.File(h5file_name, 'w')
-    file.create_dataset('data', shape=(n_samples, n_channels, patch_size, patch_size, 1),
-                        chunks=(1024, n_channels, patch_size, patch_size, 1), dtype=np.float32,
-                        maxshape=(None, n_channels, patch_size, patch_size, 1))
-    file.create_dataset('labels', data=labels)
-    file.close()
-
-    with h5py.File(h5file_name, 'a') as h5f:
-        for i, (x, y, patch) in enumerate(data_5d):
-            if is_rotate:
-                h5f['data'][4*i:4*(i+1)] = patch[:, :, :, :, None]
-            else:
-                h5f['data'][i] = patch[None, :, :, :, None]
-
-
-def set_and_save_paviau_5d_data(patch_size=5, is_rotate=True):
-    dataset = HSI.HSIDataSet('paviau')
-    dataset.get_data()
-    dataset.get_labels()
-    print('data shape is: ', dataset.data.shape)  # 145,145,200
-    print('label shape is: ', dataset.labels.shape)  # 145, 145
-
-    data, labels = np.array(dataset.data), np.array(dataset.labels)
-    dataset_process = HSI_preprocess(name='paviau', dst_shape=(610, 340, 103))
-    data = dataset_process.add_channel(data)
-    data_scale_to1 = data / np.max(data)
-    data_5d = dataset_process.get_patch_data(
-        data_scale_to1, patch_size=patch_size, is_rotate=is_rotate)
-
-    [h, w, n_channels] = data_scale_to1.shape
-    n_samples = h*w*4 if is_rotate else h*w
-    if is_rotate:
-        h5file_name = dataset.dir + \
-            '/paviau_5d_patch_{}_with_rotate.h5'.format(patch_size)
-    else:
-        h5file_name = dataset.dir + '/paviau_5d_patch_{}.h5'.format(patch_size)
 
     file = h5py.File(h5file_name, 'w')
     file.create_dataset('data', shape=(n_samples, n_channels, patch_size, patch_size, 1),

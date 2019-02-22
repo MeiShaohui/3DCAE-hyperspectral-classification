@@ -216,8 +216,7 @@ def test_split_by_ratio():
     ip = HSI.HSIDataSet('indian_pines')
     ip.get_data()
     ip.get_labels()
-    ip.pos = get_lables_pos(ip.labels, label_unique=[
-                            2, 3, 5, 8, 10, 11, 12, 14])
+    ip.pos = get_lables_pos(ip.labels, label_unique=list(range(1, 17)))
     train_label_pos, test_label_pos = divide_labels_by_ratio(ip.pos, 0.5)
     (train_label, train_index, train_data), (test_label, test_index, test_data) = get_data_divided(
         train_label_pos, test_label_pos, ip.data)

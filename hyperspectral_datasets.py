@@ -54,24 +54,6 @@ class HSIDataSetInfo():
         'label_file_name': 'Indian_pines_gt.mat',
         'label_key': 'indian_pines_gt'
     }
-    info['salina'] = {
-        'data_file_name': 'Salinas_corrected.mat',
-        'data_key': 'salinas_corrected',
-        'label_file_name': 'Salinas_gt.mat',
-        'label_key': 'salinas_gt'
-    }
-    info['pavia'] = {
-        'data_file_name': 'Pavia.mat',
-        'data_key': 'pavia',
-        'label_file_name': 'Pavia_gt.mat',
-        'label_key': 'pavia_gt'
-    }
-    info['paviau'] = {
-        'data_file_name': 'PaviaU.mat',
-        'data_key': 'paviaU',
-        'label_file_name': 'PaviaU_gt.mat',
-        'label_key': 'paviaU_gt'
-    }
 
 
 class HSIDataSet(DataSet, HSIDataSetInfo):

@@ -34,7 +34,7 @@ pip install keras
 
      - Note: We currently only support Python 3.
 
-2. install other python packages.
+2. Install other python packages.
 
 ```python
 pip install h5py sklearn
@@ -71,7 +71,7 @@ python train.py
 parser = argparse.ArgumentParser(description="train 3DCAE net",
                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--mode', type=str, default='train',
-                    help='train, test, finetune, test_finetune ')
+                    help='train, test.')
 parser.add_argument('--epoch', type=int, default=200,
                     help='1000 is ok')
 args = parser.parse_args()
